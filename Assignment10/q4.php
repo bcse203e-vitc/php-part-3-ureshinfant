@@ -15,3 +15,20 @@ header('Content-Type: image/png');
 imagepng($image);
 imagedestroy($image);
 ?>
+<?php
+session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userInput = $_POST['captcha'] ?? '';
+    if (isset($_SESSION['captcha']) && $userInput === $_SESSION['captcha']) {
+        echo "CAPTCHA verified.";
+        unset($_SESSION['captcha']);
+    } else {
+        echo "CAPTCHA incorrect. Please try again.";
+    }
+}
+?>
+<form method="post">
+    <img src="captcha.php" alt="captcha"><br>
+    <input type="text" name="captcha" required>
+    <button type="submit">Submit</button>
+</form>
